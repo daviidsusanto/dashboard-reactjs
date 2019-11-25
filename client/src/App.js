@@ -6,13 +6,13 @@ class App extends Component {
     super();
     this.state = {
       response: false,
-      endpoint: "https://project-react-new.herokuapp.com:16387"
+      endpoint: "https://project-react-new.herokuapp.com"
     };
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
+    // const { endpoint } = this.state;
+    const socket = socketIOClient.connect();
     socket.on("total_customer_registered", data => this.setState({ response: data }));
     socket.on("total_picker_registered", data => this.setState({ response2: data }));
     socket.on("total_inc_order_draft", data => this.setState({ response3: data }));

@@ -15,13 +15,13 @@ const config = {
     }
   }
 
-app.get("/", (req, res) => {
-    axios.get(
-        "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.count_customer", config
-    ).then(response => {
-        res.json({response : response.data})
-    })
-});
+// app.get("/", (req, res) => {
+//     axios.get(
+//         "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.count_customer", config
+//     ).then(response => {
+//         res.json({response : response.data})
+//     })
+// });
 
 io.on("connection", socket => {
     console.log("New client connected"), setInterval(
@@ -54,9 +54,9 @@ const getApiAndEmit = async socket => {
 if (process.env.NODE_ENV === "production"){
     app.use(express.static(__dirname + '/client/build'));
 
-    // app.get("/",(req,res)=>{
-    //     res.sendFile(path.resolve(__dirname, "client" , "build" ,"index.html"))
-    // })
+    app.get("/",(req,res)=>{
+        res.sendFile(path.resolve(__dirname, "client" , "build" ,"index.html"))
+    })
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
