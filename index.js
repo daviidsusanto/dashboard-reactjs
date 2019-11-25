@@ -33,18 +33,18 @@ io.on("connection", socket => {
 
 const getApiAndEmit = async socket => {
     try {
-        const response = await axios.get(
+        const res = await axios.get(
             "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.count_customer", config
         );
-        socket.emit("total_customer_registered", response.data.total_customer_registered);
-        socket.emit("total_picker_registered", response.data.total_picker_registered);
-        socket.emit("total_bank_sampah_registered", response.data.bank_sampah_registered);
-        socket.emit("total_inc_order_draft", response.data.incoming_order[0].total_inc_order);
-        socket.emit("total_inc_order_to_order", response.data.incoming_order[1].total_inc_order);
-        socket.emit("total_order_made_today", response.data.order_made_today[0].total_order_today);
-        socket.emit("total_all_order_on_process", response.data.total_order[2].total_order);
-        socket.emit("total_all_order_finish", response.data.total_order[1].total_order);
-        socket.emit("total_all_order_cancel", response.data.total_order[0].total_order);
+        socket.emit("total_customer_registered", res.data.total_customer_registered);
+        socket.emit("total_picker_registered", res.data.total_picker_registered);
+        socket.emit("total_bank_sampah_registered", res.data.bank_sampah_registered);
+        socket.emit("total_inc_order_draft", res.data.incoming_order[0].total_inc_order);
+        socket.emit("total_inc_order_to_order", res.data.incoming_order[1].total_inc_order);
+        socket.emit("total_order_made_today", res.data.order_made_today[0].total_order_today);
+        socket.emit("total_all_order_on_process", res.data.total_order[2].total_order);
+        socket.emit("total_all_order_finish", res.data.total_order[1].total_order);
+        socket.emit("total_all_order_cancel", res.data.total_order[0].total_order);
 
     } catch (error) {
         console.error(`Error: ${error.code}`);
