@@ -1,0 +1,68 @@
+.wrapper {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: auto auto auto;
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: center;
+  }
+
+  .box {
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+    align-items: center;
+  }
+
+  .order {
+    background-color: #4326ff;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .done {
+    background-color: #00b809;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .assigned {
+    background-color: #d4e305;
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .time {
+    background-color: #e30535;
+    grid-column: 3;
+    grid-row: 1 / span 3;
+  }
+
+  .cancelled {
+    background-color: #ff262a;
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .carry {
+    background-color: #05ab8a;
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .date-content {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+  }
+
+  .time-content {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+  }
+  
+  p{
+    font-weight: bold;
+  }

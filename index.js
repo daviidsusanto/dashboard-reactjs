@@ -13,15 +13,7 @@ const config = {
     headers: {
       'Authorization': 'token a9b5f03f9c33ab3:b88ec9d98a1ea68'
     }
-  }
-
-// app.get("/", (req, res) => {
-//     axios.get(
-//         "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.count_customer", config
-//     ).then(response => {
-//         res.json({response : response.data})
-//     })
-// });
+};
 
 io.on("connection", socket => {
     console.log("New client connected"), setInterval(
@@ -34,20 +26,19 @@ io.on("connection", socket => {
 const getApiAndEmit = async socket => {
     try {
         const res = await axios.get(
-            "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.count_customer", config
+            "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.dashboard_external", config
         );
-        socket.emit("total_customer_registered", res.data.total_customer_registered);
-        socket.emit("total_picker_registered", res.data.total_picker_registered);
-        socket.emit("total_bank_sampah_registered", res.data.bank_sampah_registered);
-        socket.emit("total_inc_order_draft", res.data.incoming_order[0].total_inc_order);
-        socket.emit("total_inc_order_to_order", res.data.incoming_order[1].total_inc_order);
-        socket.emit("total_order_made_today", res.data.order_made_today[0].total_order_today);
-        socket.emit("total_all_order_on_process", res.data.total_order[2].total_order);
-        socket.emit("total_all_order_finish", res.data.total_order[1].total_order);
-        socket.emit("total_all_order_cancel", res.data.total_order[0].total_order);
+        socket.emit("total_order", res.data.total_order);
+        socket.emit("order_cancel", res.data.order_cancel);
+        socket.emit("order_finish", res.data.order_finish);
+        socket.emit("order_assigned", res.data.order_assigned);
+        socket.emit("queue_today", res.data.queue_today);
+        socket.emit("queue_carry_over", res.data.queue_carry_over);
+        socket.emit("hit_target", res.data.hit_target);
+        socket.emit("longest_queue", res.data.longest_queue);
 
     } catch (error) {
-        console.error(`Error: ${error.code}`);
+        console.error(`Error: ${error}`);
     }
 };
 
@@ -60,3 +51,4 @@ if (process.env.NODE_ENV === "production"){
 }
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
+

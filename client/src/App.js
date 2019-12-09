@@ -1,156 +1,113 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-import Logo from "./logo1.png"
+import "./custom.css";
 class App extends Component {
   constructor() {
     super();
+    var today = new Date(),
+    day = today.getDay(),
+    date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+    
     this.state = {
       response: false,
-      endpoint: "https://project-react-new.herokuapp.com"
-    };
+      // endpoint: "https://project-react-new.herokuapp.com"
+      endpoint: "http://localhost:7006",
+      date: date,
+      day: day,
+      time: today.toLocaleTimeString()
+    }
+
+    this.countingSecond = this.countingSecond.bind(this)
   }
 
+  countingSecond() {
+    let d = new Date()
+    this.setState({
+      time: d.toLocaleTimeString()
+    })
+  }  
+  componentWillMount() {
+    setInterval(this.countingSecond, 1000)
+  }
+
+
   componentDidMount() {
-    // const { endpoint } = this.state;
-    const socket = socketIOClient.connect();
-    socket.on("total_customer_registered", data => this.setState({ response: data }));
-    socket.on("total_picker_registered", data => this.setState({ response2: data }));
-    socket.on("total_inc_order_draft", data => this.setState({ response3: data }));
-    socket.on("total_inc_order_to_order", data => this.setState({ response4: data }));
-    socket.on("total_order_made_today", data => this.setState({ response5: data }));
-    socket.on("total_bank_sampah_registered", data => this.setState({ response6: data }));
-    socket.on("total_all_order_on_process", data => this.setState({ response7: data }));
-    socket.on("total_all_order_finish", data => this.setState({ response8: data }));
-    socket.on("total_all_order_cancel", data => this.setState({ response9: data }));
+    // const socket = socketIOClient.connect();
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+    socket.on("total_order", data => this.setState({ total_order: data }));
+    socket.on("order_cancel", data => this.setState({ order_cancel: data }));
+    socket.on("order_finish", data => this.setState({ order_finish: data }));
+    socket.on("order_assigned", data => this.setState({ order_assigned: data }));
+    socket.on("queue_today", data => this.setState({ queue_today: data }));
+    socket.on("queue_carry_over", data => this.setState({ queue_carry_over: data }));
+    socket.on("hit_target", data => this.setState({ hit_target: data }));
+    // socket.on("longest_queue", data => this.setState({ longest_queue: data }));
   }
   
-  
+
   render() {
-    const { response } = this.state;
-    const { response2 } = this.state;
-    const { response3 } = this.state;
-    const { response4 } = this.state;
-    const { response5 } = this.state;
-    const { response6 } = this.state;
-    const { response7 } = this.state;
-    const { response8 } = this.state;
-    const { response9 } = this.state;
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const { total_order } = this.state;
+    const { order_cancel } = this.state;
+    const { order_finish } = this.state;
+    const { order_assigned } = this.state;
+    const { queue_today } = this.state;
+    const { queue_carry_over } = this.state;
+    const { hit_target } = this.state;
+    // const { longest_queue } = this.state;
 
     return (
       <body className = "body">
-        <div className="main-overview-banner">
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total User</p>
-                {response ?
-                  <p className="textContent2">{response}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Picker</p>
-                {response ?
-                  <p className="textContent2">{response2}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Bank Sampah</p>
-                {response ?
-                  <p className="textContent2">{response6}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
+      <div className="wrapper">
+        <div className="box order content">
+          <h3>Order Today</h3>
+          {total_order ?
+            <p>{total_order}</p>:<p>0</p>
+          }
         </div>
 
-        {/* Baris 2 */}
-        <div className="main-overview">
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Incoming Order</p>
-                {response ?
-                  <p className="textContent2">{response3}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Incoming To Order</p>
-                {response ?
-                  <p className="textContent2">{response4}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
+        <div className="box done content">
+          <h3>Order Done</h3>
+          {order_finish ?
+            <p>{order_finish}</p>:<p>0</p>
+          }
         </div>
 
-        {/* Baris 3 */}
-        <div className="main-overview">
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Order On Process</p>
-                {response ?
-                  <p className="textContent2">{response7}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Order Finish</p>
-                {response ?
-                  <p className="textContent2">{response8}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
+        <div className="box assigned content">
+          <h3>Order Assign</h3>
+          {order_assigned ?
+            <p>{order_assigned}</p>:<p>0</p>
+          }
         </div>
 
-        {/* Baris 4 */}
-        <div className="main-overview">
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Order Cancel</p>
-                {response ?
-                  <p className="textContent2">{response9}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
-          <div className="overviewcard">
-              <div>
-                <p className="textContent">Total Order Today</p>
-                {response ?
-                  <p className="textContent2">{response5}</p>:<p className="textContent2">Loading</p>
-                }
-              </div>
-              <div>
-                <img src={Logo} className="overviewcard_icon" alt="Logo"></img>
-              </div>
-          </div>
+        <div className="box time content">
+          <h3 className="date-content">{days[this.state.day]}, {this.state.date}</h3>
+          <h3 className="time-content">{this.state.time}</h3>
+          <h3>Hit Rate</h3>
+          {hit_target ?
+            <h3>{hit_target} %</h3>:<h3>0</h3>
+          }
         </div>
+
+        <div className="box cancelled content">
+          <h3>Cancelled</h3>
+          {order_cancel ?
+            <p>{order_cancel}</p>:<p>0</p>
+          }
+        </div>
+        
+        <div className="box carry content">
+          <h3>Queue Today</h3>
+          {queue_today ?
+            <p>{queue_today}</p>:<p>0</p>
+          }
+          <h3>Carry Order</h3>
+          {queue_carry_over ?
+            <p>{queue_carry_over}</p>:<p>0</p>
+          }
+        </div>
+      </div>
       </body>
     );
   }
