@@ -11,20 +11,22 @@ app.use(cors());
 
 const config = {
     headers: {
-      'auth': 'token'
+        'Authorization': 'token a9b5f03f9c33ab3:b88ec9d98a1ea68'
     }
 };
 
 io.on("connection", socket => {
-    console.log("New client connected") 
-    getApiAndEmit(socket)
+    console.log("New client connected"), setInterval(
+        () => getApiAndEmit(socket),
+        5000
+    );
     socket.on("disconnect", () => console.log("Client disconnected"));
 });
 
 const getApiAndEmit = async socket => {
     try {
         const res = await axios.get(
-            "url_api", config
+            "https://dev-lestari.multiinti.io/api/method/digitalwastev2.addon.dashboard_external", config
         );
         socket.emit("total_order", res.data.total_order);
         socket.emit("order_cancel", res.data.order_cancel);
@@ -34,6 +36,7 @@ const getApiAndEmit = async socket => {
         socket.emit("queue_carry_over", res.data.queue_carry_over);
         socket.emit("hit_target", res.data.hit_target);
         socket.emit("longest_queue", res.data.longest_queue);
+        socket.emit("stock_item", res.data.stock_item);
 
     } catch (error) {
         console.error(`Error: ${error}`);

@@ -19,37 +19,37 @@
 
   .order {
     background-color: #4326ff;
-    grid-column: 1;
+    grid-column: 1 / span 2;
     grid-row: 1 / span 2;
   }
 
   .done {
     background-color: #00b809;
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 1;
   }
 
   .assigned {
     background-color: #d4e305;
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 2;
   }
 
   .time {
     background-color: #e30535;
-    grid-column: 3;
+    grid-column: 4;
     grid-row: 1 / span 3;
   }
 
   .cancelled {
     background-color: #ff262a;
-    grid-column: 1;
+    grid-column: 1 / span 2;
     grid-row: 3;
   }
 
   .carry {
     background-color: #05ab8a;
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 3;
   }
 
@@ -61,6 +61,22 @@
   .time-content {
     grid-column: 1 / span 2;
     grid-row: 2;
+  }
+
+  .pie-chart {
+    grid-column: 4;
+    grid-row: 4;
+  }
+
+  .table {
+    grid-column: 1 / span 3;
+    grid-row: 4;
+    justify-content: center;
+  }
+
+  .border-table{
+    border-color: antiquewhite;
+    border: white;
   }
   
   p{
